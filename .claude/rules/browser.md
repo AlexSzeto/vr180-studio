@@ -1,6 +1,6 @@
 ## Browser Windows
 
-Close the built-in browser (the `mcp__Claude_Browser__*` pane) whenever it is not in use. An open page keeps running — Play holds SSE streams, audio, and video — and every open session adds load for everyone sharing the environment.
+Close the built-in browser (the `mcp__Claude_Browser__*` pane) whenever it is not in use. An open page keeps running — video previews keep decoding and playing audio — and every open session adds load for everyone sharing the environment.
 
 - **Close when you finish with it.** As soon as a verification or inspection is done and nothing in the next step needs the page, close every tab you opened with `tabs_close`; closing the last tab closes the pane. Do this before wrapping up the turn, not at the end of the session.
 - **Do not leave it open "for the user to look at".** Share what you saw (a screenshot, the measured values) in the reply instead. Reopen it only when the user asks to see it live.

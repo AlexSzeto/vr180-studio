@@ -112,7 +112,7 @@ async function writeAgentsMd() {
     '',
     "This project's conventions live in `.claude/rules/`, the canonical source shared with Claude Code.",
     '**Before writing or changing any code, read every file listed below in full** and follow it.',
-    'They hold rules that are easy to miss without reading them: the AnyTale Play glass-kit exception, theme tokens over hardcoded values, component reuse, testing, card and git workflow.',
+    'They hold rules that are easy to miss without reading them: theme tokens over hardcoded values, component reuse, testing, card and git workflow.',
     '',
     ...ruleFiles.map((name) => `- \`.claude/rules/${name}\``),
     '',

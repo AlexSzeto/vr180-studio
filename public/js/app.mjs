@@ -22,7 +22,9 @@ function App() {
       <${Panel} padding="large">
         <${VerticalLayout}>
           <${H1}>VR180 Studio<//>
-          <${Caption}>Project scaffold — features arrive through the kanban board.<//>
+          <${Caption}
+            >Project scaffold — features arrive through the kanban board.<//
+          >
         <//>
       <//>
     <//>

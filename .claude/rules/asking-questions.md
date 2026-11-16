@@ -24,7 +24,7 @@ If the likely answers can be enumerated and the user may occasionally want to wr
 
 When a skill or task ends by pointing at a follow-up, such as "Run `/implement-story <slug>.md` to begin", "suggest running `/groom-story`", or "offer to run `/stage-and-commit` first", **offer that follow-up as an `AskUserQuestion` decision, not as a sentence**. The harness can reformat a slash command in prose as a console command, which can't be acted on. Picking an option in the decision UI can be acted on: the choice is the user's confirmation, and the agent then invokes the chosen skill itself through the `Skill` tool, with the same arguments the sentence would have named.
 
-- **The skill's suggested follow-up is the recommended option**, first, labelled with what it does and the command it runs (e.g. `Implement now: /implement-story sfx-closed-captions.md (Recommended)`).
+- **The skill's suggested follow-up is the recommended option**, first, labelled with what it does and the command it runs (e.g. `Implement now: /implement-story crossfade-render.md (Recommended)`).
 - **Add the realistic alternatives**, with at most 4 options in total, such as another skill that commonly comes next (`/stage-and-commit`, `/groom-story`) or a **Stop here** option that ends the turn with nothing run.
 - **A skill's "tell the user to run `/x`" line is the option, not the format**, just as a quoted prompt is the question's wording.
 - **Nothing runs without the pick.** Never invoke the follow-up first and ask afterwards, and never treat the suggestion itself as approval.
