@@ -74,7 +74,7 @@ Every story and ticket belonging to a feature records the parent feature's `id` 
 
 ```yaml
 metadata:
-  feature: 'new-user-experience-polish'
+  feature: 'quick-editor-parity'
 ```
 
 The value is the feature card's stable `id` slug. It is deliberately **not** a file path: cards move between lanes constantly, and any relative link breaks the moment they do.
@@ -93,7 +93,7 @@ Cards with no `metadata.feature` are unaffiliated — legitimate for backlog ite
 
 The first time a card — feature, story, or ticket — comes up in a discussion, emit a markdown link to its file before saying anything else about it:
 
-[anytale-editor-incremental-updates](.kanban/boards/features/in-progress/anytale-editor-incremental-updates.md)
+[clip-trim-editor](.kanban/boards/features/in-progress/clip-trim-editor.md)
 
 - **Resolve the path fresh.** Glob `.kanban/boards/features/*/<slug>.md` at the moment of use. Cards move lanes constantly, so never reuse a path from earlier in the conversation without re-checking it.
 - **Link text is the card slug; the href is the repo-relative path.** The harness renders these as clickable links.
@@ -114,12 +114,12 @@ Release-level statement of the rollout's intent — what a user gets when this b
 
 ## Stories
 
-- [x] `tag-hover-definitions.md` — Tag Hover Definitions
-- [ ] `tag-panel-semantic-search.md` — Tag Panel Semantic Search
+- [x] `project-list.md` — Project List
+- [ ] `crossfade-render.md` — Crossfade Render
 
 ## Tickets
 
-- [ ] `editor-queue-plot-multi-tab-dialog-crosstalk.md` — Editor Queue Plot Multi-Tab Dialog Crosstalk
+- [ ] `trim-drops-last-frame.md` — Trim Drops Last Frame
 
 ## Notes
 
@@ -304,8 +304,7 @@ The "active feature" is resolved from the current git branch name, which matches
 
 A card that will not be built is shelved with `abandon-story`, never by dragging
 it to the lane. Dragging records nothing, and a card in `abandoned/` without a
-reason teaches the next person nothing — 8 of the 10 cards already in the lane
-when this ledger was introduced had no reason recorded at all.
+reason teaches the next person nothing.
 
 Abandonment writes in two places:
 
@@ -371,9 +370,7 @@ Anything considered and cut, with why.
 
 `archive-feature` writes the summary, deletes the archived child cards and the feature card from the board, and empties the Done lane. Unaffiliated Done cards are adopted into the summary, and leftovers from already-archived features are backfilled into their own summaries before deletion. It then outputs a draft PR title and description. Git history preserves the raw cards, so the summary is a distillation rather than a dump — it exists to be read, which the old per-card archive rarely was.
 
-When a feature **replaces an implementation whose history lives in the archives** (as `play-v2-swap` did for AnyTale Play), update `project-management/archived/README.md` so earlier summaries can be read in context: say what the old implementation was, when and by what it was removed, and which summaries describe it. Add a dated context banner under the H1 of each affected dated summary pointing at the README.
-
-`project-management/archived/legacy/` holds the pre-feature-system archive: sequentially numbered per-card files (`1-…` through `201-…`) plus the `ambrew-integration/` sub-project. It is frozen — nothing new is written there.
+When a feature **replaces an implementation whose history lives in the archives**, update `project-management/archived/README.md` so earlier summaries can be read in context: say what the old implementation was, when and by what it was removed, and which summaries describe it. Add a dated context banner under the H1 of each affected dated summary pointing at the README.
 
 ## Modifying the Project Management System
 

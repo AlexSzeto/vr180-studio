@@ -233,23 +233,19 @@ Every generated task list must end with a docs-review bullet nested under the fi
 
 **Mapping story scope → affected docs:**
 
-| Story touches…                              | Likely affected docs            |
-| ------------------------------------------- | ------------------------------- |
-| AnyTale (characters, parts, plots, outfits) | `docs/features/anytale.md`      |
-| Ambient brew / sound sources                | `docs/features/ambient-brew.md` |
-| Main gallery, generation form, inpaint      | `docs/features/main-gallery.md` |
-| ComfyUI workflow config, pre/post tasks     | `docs/workflow.md`              |
-| New or changed API endpoints                | `docs/server.md`                |
-| New `custom-ui` components                  | `docs/components.md`            |
-| New pages (changes to `hamburger-menu.mjs`) | `docs/scaffolding.md`           |
-| Backend architecture, new feature domains   | `docs/architecture.md`          |
-| Client-side patterns, component strategy    | `.claude/rules/client.md`       |
-| Server-side patterns, domain structure      | `.claude/rules/server.md`       |
-| Project management, board, card format      | `.claude/rules/planning.md`     |
+| Story touches…                                       | Likely affected docs         |
+| ---------------------------------------------------- | ---------------------------- |
+| An app section (projects, clip editing, render, …)   | `docs/features/<section>.md` |
+| New or changed API endpoints                         | `docs/server.md`             |
+| New `custom-ui` components                           | `docs/components.md`         |
+| Backend architecture, new feature domains, new pages | `docs/architecture.md`       |
+| Client-side patterns, component strategy             | `.claude/rules/client.md`    |
+| Server-side patterns, domain structure               | `.claude/rules/server.md`    |
+| Project management, board, card format               | `.claude/rules/planning.md`  |
 
 A story may affect multiple docs — list all that apply. When in doubt, err toward listing more rather than fewer.
 
-**Feature doc creation:** If the story touches a named app section (anytale, brew, main/inpaint/workflow-editor) and that section's `docs/features/<section>.md` file does not yet exist, add a bullet before the docs-review bullet to create it:
+**Feature doc creation:** If the story touches a named app section (projects, clip editing, render, …) and that section's `docs/features/<section>.md` file does not yet exist, add a bullet before the docs-review bullet to create it:
 
 ```
   - Create `docs/features/<section>.md` documenting the user flow, component interactions, server endpoints, and key data shapes for the <section> feature area
@@ -257,7 +253,7 @@ A story may affect multiple docs — list all that apply. When in doubt, err tow
 
 ## Data Migration Tasks
 
-If a story changes the schema of any tracked data file (`server/config.json`, `server/database/anytale-data.json`, `server/database/play-tales.json`, `server/database/media-data.json`, `server/database/brew-data.json`, `server/database/sound-sources.json` — see `server/core/data-versions.mjs`'s `DATA_DOMAINS` for the authoritative list), the task list **must** include:
+If a story changes the schema of any tracked data file (`server/config.json` and every `server/database/*.json` domain — see `server/core/data-versions.mjs`'s `DATA_DOMAINS` for the authoritative list), the task list **must** include:
 
 1. A migration script at `scripts/migrate/<domain>/<N>-to-<M>.mjs` (where `<domain>` matches the filename without `.json`, `<N>` is the current version, `<M>` is `<N>+1`).
 2. A bullet to bump `currentVersion` for that domain in `server/core/data-versions.mjs`.
@@ -281,9 +277,9 @@ export function migrate(data) {
 
 The migrator (`server/core/migrator.mjs`) runs all required scripts automatically on server startup, backs up data before migrating, and restores on failure. Migration scripts do **not** set `data.version` — the migrator writes the final version after each step.
 
-**`migrate(data)` must be idempotent and guarded** — safe to run twice in a row against its own output with the second run a no-op. This isn't just a startup-chain concern: `migrateDataObject` (also in `server/core/migrator.mjs`) runs the same scripts in-memory against arbitrary source versions when importing an AnyTale library/tale bundle (see `docs/architecture.md`'s Data Versioning section). Gate destructive renames/moves on the **absence** of the destination field, use `??`/`!Array.isArray(x)`/`x === undefined` guards for default-fill migrations, and verify (don't assume) that value-remap migrations can't re-fire on their own output.
+**`migrate(data)` must be idempotent and guarded** — safe to run twice in a row against its own output with the second run a no-op. A migration may be re-run against its own output (a restored backup, a retried startup), so it must never assume it sees each input once. Gate destructive renames/moves on the **absence** of the destination field, use `??`/`!Array.isArray(x)`/`x === undefined` guards for default-fill migrations, and verify (don't assume) that value-remap migrations can't re-fire on their own output.
 
-**New data files must be stamped with the current version on creation.** If the story adds or changes a domain's write path, its single write function should set `data.version = getCurrentVersion(domain)` (from `data-versions.mjs`) before writing — otherwise a freshly created file (e.g. from a first save or an import) carries no `"version"` field and gets misread as version `0` on the next server restart, incorrectly replaying the full migration chain. This only applies where the data file is a JSON object; a bare top-level array (like `brew-data`/`sound-sources`) can't carry `.version`.
+**New data files must be stamped with the current version on creation.** If the story adds or changes a domain's write path, its single write function should set `data.version = getCurrentVersion(domain)` (from `data-versions.mjs`) before writing — otherwise a freshly created file (e.g. from a first save or an import) carries no `"version"` field and gets misread as version `0` on the next server restart, incorrectly replaying the full migration chain. This only applies where the data file is a JSON object; a bare top-level array can't carry `.version`.
 
 ## Rules
 
