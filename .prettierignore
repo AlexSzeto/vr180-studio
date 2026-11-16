@@ -1,0 +1,22 @@
+node_modules/
+server/logs/
+server/temp/
+server/storage/
+server/database/
+server/config.json
+scripts/migrate/backups/
+.codex
+.agents
+
+# Kanban Lite runtime files (user-specific state, not board data)
+.kanban/card-state/
+.kanban/.active-card.json
+.kanban/boards/features/**/attachments/*.log
+
+# Local reference material (cloned repos for development research)
+scratch/
+reference/
+
+# Vendored third-party file - must stay byte-identical to upstream
+public/js/custom-ui/layout/markdown/marked.esm.js
+public/lib/
